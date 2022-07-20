@@ -1,12 +1,8 @@
 import NodeMediaServer from 'node-media-server';
-import { spawn } from 'node:child_process';
-import { access, mkdir } from 'node:fs';
 
-import { getFfmpegCommandLineArgs } from './ffmpeg/get-ffmpeg-clargs.js';
+import { ffmpegCommand } from './ffmpeg/command.js';
 
 const config = {
-  logType: 3,
-
   rtmp: {
     port: 1935,
     chunk_size: 60000,
@@ -19,35 +15,17 @@ const config = {
     allow_origin: '*',
     mediaroot: './media',
   },
+  trans: {
+    ffmpeg: 'C:\\ffmpeg\\bin\\ffmpeg.exe',
+    tasks: [
+      {
+        app: 'live',
+        hls: true,
+        raw: ffmpegCommand,
+      },
+    ],
+  },
 };
 
 const server = new NodeMediaServer(config);
 server.run();
-
-server.on('prePublish', (id, streamPath, args) => {
-  const directory = `./media/live/${id}`;
-  access(directory, error => {
-    if (error) {
-      mkdir(directory, { recursive: true }, error => {
-        if (error) {
-          console.log(error);
-        }
-      });
-    }
-  });
-
-  const ffmpeg = 'C:\\ffmpeg\\bin\\ffmpeg.exe';
-  const proc = spawn(
-    ffmpeg,
-    getFfmpegCommandLineArgs(id, streamPath, config.http.mediaroot)
-  );
-
-  proc.stdout.on('data', data => {
-    console.log(data);
-  });
-
-  proc.stderr.setEncoding('utf8');
-  proc.stderr.on('data', data => {
-    console.log(data);
-  });
-});
