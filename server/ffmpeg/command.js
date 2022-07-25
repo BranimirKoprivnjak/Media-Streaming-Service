@@ -1,4 +1,4 @@
-// input and output commands missing, they get added in src/node_trans_session.js:line66
+// input and output commands get added in src/node_trans_session.js:line66
 export const ffmpegCommand = [
   '-map',
   '0:v:0',
