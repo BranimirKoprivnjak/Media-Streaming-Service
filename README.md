@@ -23,6 +23,8 @@ Media stream can be played in browser using the any player that supports Media s
 - cap frames to 30 on 360p resolution
 - fine-tune -crf
 - prevent file creation & transmuxing on invalid stream inputs
+- merge thumb creation proc with transmuxing proc
+- once new thumb is ready, delete old one
 
 ### Nice to do's
 

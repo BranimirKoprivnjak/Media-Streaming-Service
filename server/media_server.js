@@ -1,7 +1,10 @@
 import config from './config/default.js';
 import NodeMediaServer from 'node-media-server';
 
-import { checkIfStreamKeyExists } from './helpers/helpers.js';
+import {
+  checkIfStreamKeyExists,
+  generateStreamThumbnail,
+} from './helpers/helpers.js';
 
 const nodeMediaServer = new NodeMediaServer(config.rtmp_server);
 
@@ -14,12 +17,11 @@ nodeMediaServer.on('prePublish', (id, StreamPath, args) => {
   );
 
   checkIfStreamKeyExists(streamKey, 'users').then(streamKeyExists => {
-    console.log(typeof streamKeyExists);
     if (!streamKeyExists) {
       const session = nodeMediaServer.getSession(id);
       session.reject();
     } else {
-      // generate stream thumbnail
+      generateStreamThumbnail(streamKey);
     }
   });
 });
