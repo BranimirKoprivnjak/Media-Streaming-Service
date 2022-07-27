@@ -1,14 +1,14 @@
+import { Route, Routes } from 'react-router-dom';
+
 import LiveStreams from './components/LiveStreams.js';
-import NavBar from './components/UI/NavBar.js';
 import VideoPlayer from './components/VideoPlayer.js';
 
 const App = () => {
   return (
-    <>
-      <NavBar />
-      <LiveStreams />
-      <VideoPlayer />
-    </>
+    <Routes>
+      <Route exact path="/" element={<LiveStreams />} />
+      <Route exact path="/:streamKey" element={<VideoPlayer />} />
+    </Routes>
   );
 };
 

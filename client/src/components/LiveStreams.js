@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import NavBar from './UI/NavBar.js';
 
 const streamsUrl = 'http://127.0.0.1:8000/api/streams';
 
@@ -38,8 +41,18 @@ const LiveStreams = () => {
 
   return (
     <>
+      <NavBar />
       {isLoading && <p>Loading...</p>}
       {!isLoading && noLiveStreamsFound && <p>No results found</p>}
+      {!isLoading &&
+        !noLiveStreamsFound &&
+        liveStreams.map(liveStream => (
+          <Link to={liveStream.publisher.stream}>
+            <div>
+              <img src={'http://127.0.0.1:8080/thumbnails'} />
+            </div>
+          </Link>
+        ))}
     </>
   );
 };

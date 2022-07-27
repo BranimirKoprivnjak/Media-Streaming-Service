@@ -23,27 +23,12 @@ export const generateStreamThumbnail = streamKey => {
     '-i',
     'rtmp://127.0.0.1:1935/live/' + streamKey,
     '-vf',
-    'fps=1/6',
-    '-vcodec',
-    'png',
-    '-an',
-    '-f',
-    'image2',
-    '-y',
+    'fps=1/6,scale=440:-1',
     'server/thumbnails/' + streamKey + '_%02d.png',
   ];
 
-  const proc = spawn(cmd, args);
-
-  // proc.stdout.on('data', data => {
-  //   console.log(`stdout: ${data}`);
-  // });
-
-  // proc.stderr.on('data', data => {
-  //   console.error(`stderr: ${data}`);
-  // });
-
-  // proc.on('close', code => {
-  //   console.log(`child process exited with code ${code}`);
-  // });
+  spawn(cmd, args, {
+    detached: true,
+    stdio: 'ignore',
+  }).unref();
 };
